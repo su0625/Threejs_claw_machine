@@ -1,0 +1,50 @@
+body {
+    margin: 0%;
+    font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 5px 0px 0px;
+}
+
+h1 {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    text-align: center;
+    color: rgb(13, 83, 83);
+}
+
+form {
+    text-align: center;
+}
+
+input {
+    font-size: 15px;
+    height: 50px;
+    width: 100px;
+}
+
+.left{
+	position: relative;
+	float:left;
+	height: 350px;
+	width: 150px;
+}
+
+.center{
+	position: relative;
+	float: left;
+	height: 350px;
+	width: 150px;
+}
+
+.right{
+	position: relative;
+	float: left;
+	height: 350px;
+	width: 150px;
+}

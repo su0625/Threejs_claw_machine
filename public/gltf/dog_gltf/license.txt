@@ -1,0 +1,11 @@
+Model Information:
+* title:	Playful Dog
+* source:	https://sketchfab.com/3d-models/playful-dog-ec87fabdf4c3434fb03fecb67eeea6cc
+* author:	mpmramos (https://sketchfab.com/mpmramos)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Playful Dog" (https://sketchfab.com/3d-models/playful-dog-ec87fabdf4c3434fb03fecb67eeea6cc) by mpmramos (https://sketchfab.com/mpmramos) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
