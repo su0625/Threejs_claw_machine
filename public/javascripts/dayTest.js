@@ -601,8 +601,9 @@ function render() {
 
     // piskeObj.piske.position.copy(PiskeCBody.position)
     // piskeObj.piske.quaternion.copy(PiskeCBody.quaternion)
-    PiskeA.position.copy(PiskeABody.position)
-    PiskeA.quaternion.copy(PiskeABody.quaternion)
+
+    // PiskeA.position.copy(PiskeABody.position)
+    // PiskeA.quaternion.copy(PiskeABody.quaternion)
 
     // PiskeA.position.copy(PiskeABody.position)
     // PiskeA.quaternion.copy(PiskeABody.quaternion)
