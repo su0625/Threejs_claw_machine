@@ -175,6 +175,7 @@ function initUsagiCannon(){
     });
     UsagiA = new THREE.Mesh(UsagiAGeo, UsagiAMat);
     UsagiA.castShadow = true
+    // 若不需要顯示網格可以註解掉 剛體效果還是會在
     scene.add(UsagiA);
   
     // 建立Usagi B 剛體 Sphere(radius)

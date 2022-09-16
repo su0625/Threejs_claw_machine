@@ -272,7 +272,7 @@ function initUsagiCannon(){
   });
   UsagiA = new THREE.Mesh(UsagiAGeo, UsagiAMat);
   UsagiA.castShadow = true
-  scene.add(UsagiA);
+  // scene.add(UsagiA);
 
   // 建立Usagi B 剛體 Sphere(radius)
   let UsagiBShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
@@ -292,7 +292,7 @@ function initUsagiCannon(){
   });
   UsagiB = new THREE.Mesh(UsagiBGeo, UsagiBMat);
   UsagiB.castShadow = true
-  scene.add(UsagiB);
+  // scene.add(UsagiB);
 
   // 建立Usagi C 剛體 Sphere(radius)
   let UsagiCShape = new CANNON.Box(new CANNON.Vec3(0.25, 0.3, 0.25))
@@ -312,7 +312,7 @@ function initUsagiCannon(){
   });
   UsagiC = new THREE.Mesh(UsagiCGeo, UsagiCMat);
   UsagiC.castShadow = true
-  scene.add(UsagiC);
+  // scene.add(UsagiC);
 
   // Usagi 剛體組裝
   UsagiBodyJoint1 = new CANNON.LockConstraint(UsagiABody,UsagiBBody)
@@ -325,17 +325,18 @@ const timeStep = 1.0 / 60.0 // seconds
 function render() {
     world.step(timeStep)
     // 複製剛體位址到物體位置
-    UsagiA.position.copy(UsagiABody.position)
-    UsagiA.quaternion.copy(UsagiABody.quaternion)
+    // UsagiA.position.copy(UsagiABody.position)
+    // UsagiA.quaternion.copy(UsagiABody.quaternion)
 
-    UsagiB.position.copy(UsagiBBody.position)
-    UsagiB.quaternion.copy(UsagiBBody.quaternion)
+    // UsagiB.position.copy(UsagiBBody.position)
+    // UsagiB.quaternion.copy(UsagiBBody.quaternion)
 
-    UsagiC.position.copy(UsagiCBody.position)
-    UsagiC.quaternion.copy(UsagiCBody.quaternion)
+    // UsagiC.position.copy(UsagiCBody.position)
+    // UsagiC.quaternion.copy(UsagiCBody.quaternion)
 
-    // usagiObj.usagi.position.copy(UsagiCBody.position)
-    // usagiObj.usagi.quaternion.copy(UsagiCBody.quaternion)
+    // 顯示貼圖樣子
+    usagiObj.usagi.position.copy(UsagiCBody.position)
+    usagiObj.usagi.quaternion.copy(UsagiCBody.quaternion)
     
     statsUI.update()
     TWEEN.update()

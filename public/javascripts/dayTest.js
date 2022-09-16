@@ -16,14 +16,14 @@ let usagi_init_z = 0
 
 // 夾爪初始位置
 let gripperR_init_x = -3.8
-let gripperR_init_y = 9.5
+let gripperR_init_y = 8.5
 let gripperR_init_z = 1
 let gripperL_init_x = -6.8
-let gripperL_init_y = 9.5
+let gripperL_init_y = 8.5
 let gripperL_init_z = 1
 
 // gltf
-var glass_load_flag = false
+// var glass_load_flag = false
 
 class Usagi{
     constructor(){
@@ -156,7 +156,9 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     // 設定背景顏色
     renderer.setClearColor(0xeeeeee, 1.0)
-    renderer.shadowMap.enabled = true 
+    renderer.shadowMap.enabled = true
+    renderer.outputEncoding = THREE.sRGBEncoding;
+
     // 陰影貼圖種類   
     renderer.shadowMap.type = 2
         
@@ -186,6 +188,7 @@ function init() {
     createPiske()
     base_loader()
     glass_outer_loader()
+    roof_loader()
     
   // 將渲染器的 DOM 綁到網頁上
   document.body.appendChild(renderer.domElement)
@@ -312,17 +315,17 @@ function initCannon(){
 }
 
 function initClawMachineCannon(){  
-    // 建立機台地板剛體 
-    let machineBottom = new CANNON.Box(new CANNON.Vec3(3.4, 0.1, 3))
+    // 建立機台夾層地板剛體 
+    let machineBottom = new CANNON.Box(new CANNON.Vec3(3.5, 0.1, 3))
     let machineBottomMaterial = new CANNON.Material()
     machineBottomBody = new CANNON.Body({
         shape: machineBottom,
-        position: new CANNON.Vec3(-0.4, 4.5, 0),
+        position: new CANNON.Vec3(-0.5, 4.5, 0),
         material: machineBottomMaterial,
     })
     world.add(machineBottomBody)
 
-    // 機台地板網格
+    // 機台夾層地板網格
     const machineBottomGeo = new THREE.BoxGeometry(6.8, 0.2, 6);
     const machineBottomMat = new THREE.MeshPhongMaterial({
         color: 0x000000,
@@ -332,17 +335,17 @@ function initClawMachineCannon(){
     scene.add(machine);
 
     // 右牆壁剛體
-    let wallshape = new CANNON.Box(new CANNON.Vec3(0.1, 2, 3))
+    let wallshape = new CANNON.Box(new CANNON.Vec3(0.1, 2.7, 3))
     let wallMaterial = new CANNON.Material()
     wallBody = new CANNON.Body({
         shape: wallshape,
-        position: new CANNON.Vec3(3, 6.5, 0),
+        position: new CANNON.Vec3(3, 7.2, 0),
         material: wallMaterial,
     })
     world.add(wallBody)
 
     // 右牆壁網格
-    const wallGeo = new THREE.BoxGeometry(0.2, 4, 6);
+    const wallGeo = new THREE.BoxGeometry(0.2, 5.4, 6);
     const wallMat = new THREE.MeshPhongMaterial({
         color: 0x4287f5,
     });
@@ -351,17 +354,17 @@ function initClawMachineCannon(){
     scene.add(wall);
 
     // 左牆壁剛體
-    let wallLshape = new CANNON.Box(new CANNON.Vec3(0.1, 3.7, 3))
+    let wallLshape = new CANNON.Box(new CANNON.Vec3(0.1, 4.5, 3))
     let wallLMaterial = new CANNON.Material()
     wallLBody = new CANNON.Body({
         shape: wallLshape,
-        position: new CANNON.Vec3(-7.3, 4.8, 0),
+        position: new CANNON.Vec3(-7.5, 5.4, 0),
         material: wallLMaterial,
     })
     world.add(wallLBody)
 
     // 左牆壁網格
-    const wallLGeo = new THREE.BoxGeometry(0.2, 7.4, 6);
+    const wallLGeo = new THREE.BoxGeometry(0.2, 9, 6);
     const wallLMat = new THREE.MeshPhongMaterial({
         color: 0x4287f5,
     });
@@ -369,17 +372,17 @@ function initClawMachineCannon(){
     wallL.castShadow = true
     scene.add(wallL);
 
-    // 夾板剛體
+    // 檔板剛體
     let swallshape = new CANNON.Box(new CANNON.Vec3(0.1, 2.5, 3))
     let swallMaterial = new CANNON.Material()
     swallBody = new CANNON.Body({
         shape: swallshape,
-        position: new CANNON.Vec3(-3.8, 3.4, 0),
+        position: new CANNON.Vec3(-4, 3.4, 0),
         material: swallMaterial,
     })
     world.add(swallBody)
 
-    //夾板網格
+    //檔板網格
     const swallGeo = new THREE.BoxGeometry(0.2, 5, 6);
     const swallMat = new THREE.MeshPhongMaterial({
         color: 0x4287f5,
@@ -393,7 +396,7 @@ function initClawMachineCannon(){
     let floorMaterial = new CANNON.Material()
     floorBody = new CANNON.Body({
         shape: floorshape,
-        position: new CANNON.Vec3(-5.6, 1, 0),
+        position: new CANNON.Vec3(-5.8, 1, 0),
         material: floorMaterial,
     })
     world.add(floorBody)
@@ -407,27 +410,45 @@ function initClawMachineCannon(){
     floor.castShadow = true
     scene.add(floor);
 
-    // 背板
-    let backwallshape = new CANNON.Box(new CANNON.Vec3(5.2, 2, 0.1))
+    // 背板剛體
+    let backwallshape = new CANNON.Box(new CANNON.Vec3(5.2, 2.8, 0.1))
     let backwallMaterial = new CANNON.Material()
     backwallBody = new CANNON.Body({
         shape: backwallshape,
-        position: new CANNON.Vec3(-2.2, 6.5, -3),
+        position: new CANNON.Vec3(-2.2, 7.1, -3),
         material: backwallMaterial,
     })
     world.add(backwallBody)
 
-    const backwallGeo = new THREE.BoxGeometry(10.5, 4, 0.2);
+    // 背板網格
+    const backwallGeo = new THREE.BoxGeometry(10.5, 5.6, 0.2);
     const backwallMat = new THREE.MeshPhongMaterial({
         color: 0x1C4265,
-        transparent:true,
-        // opacity:0.5,
     });
     backwall = new THREE.Mesh(backwallGeo, backwallMat);
     backwall.castShadow = true
-    // backwall.position.set(-2.1,6.5,-3)
     scene.add(backwall);
 
+    // 前玻璃剛體
+    let frontwallshape = new CANNON.Box(new CANNON.Vec3(5.2, 2.8, 0.1))
+    let frontwallMaterial = new CANNON.Material()
+    frontwallBody = new CANNON.Body({
+        shape: frontwallshape,
+        position: new CANNON.Vec3(-2.2, 7.1, 3),
+        material: frontwallMaterial,
+    })
+    world.add(frontwallBody)
+
+    // 前玻璃網格
+    const frontwallGeo = new THREE.BoxGeometry(10.5, 5.6, 0.2);
+    const frontwallMat = new THREE.MeshPhongMaterial({
+        color: 0x1C4265,
+        transparent:true,
+        opacity:0.3,
+    });
+    frontwall = new THREE.Mesh(frontwallGeo, frontwallMat);
+    frontwall.castShadow = true
+    scene.add(frontwall);
 }
 
 function initUsagiCannon(){
@@ -499,12 +520,12 @@ function initUsagiCannon(){
 
 
   // 設定地板剛體與物體剛體 碰撞時會交互作用
-//   UsagiGroundContact = new CANNON.ContactMaterial(gripperRCM, UsagiBCM, {
-//     mass:0,
-//     friction: 0, 
-//     restitution: 0 // 恢復係數, 衡量兩個物體碰撞後反彈程度
-//   })
-//   world.addContactMaterial(UsagiGroundContact)
+  // UsagiGroundContact = new CANNON.ContactMaterial(gripperRCM, UsagiBCM, {
+  //   // mass:0,
+  //   friction: 0.5, 
+  //   restitution: 0 // 恢復係數, 衡量兩個物體碰撞後反彈程度
+  // })
+  // world.addContactMaterial(UsagiGroundContact)
 }
 
 function initPiskeCannon(){
@@ -618,7 +639,7 @@ function render() {
     TWEEN.update()
     cameraControl.update()
 
-    requestAnimationFrame(wall_load)
+    // requestAnimationFrame(wall_load)
     requestAnimationFrame(gripper_load)
     requestAnimationFrame(render)
 
@@ -645,10 +666,8 @@ function wall_load() {
   backwall.position.copy(backwallBody.position)
   backwall.quaternion.copy(backwallBody.quaternion)
 
-  // if(glass_load_flag){
-  //   glass_outerObj.position.copy(backwallBody.position)
-  //   glass_outerObj.quaternion.copy(backwallBody.quaternion)
-  // }
+  frontwall.position.copy(frontwallBody.position)
+  frontwall.quaternion.copy(frontwallBody.quaternion)
 }
 function gripper_load(){
   gripperRTop.position.copy(gripperRTopBody.position)
@@ -666,9 +685,6 @@ function gripper_load(){
 
 function click_Gripper(){
     console.log("click_Gripper")
-    // init_x = gripperRBody.position.x
-    // init_z = gripperRBody.position.z
-    // init_y = gripperRBody.position.y
 
     initR_x = gripperRBody.position.x
     initR_z = gripperRBody.position.z
@@ -679,16 +695,16 @@ function click_Gripper(){
 
     // R
     let offsetR = {x:initR_x,z:initR_z,y:initR_y}
-    let DownTargetR = {x:initR_x,z:initR_z,y:initR_y-4.5}
-    let MoveTargetR = {x:initR_x-0.65,z:initR_z,y:initR_y-4.5}
+    let DownTargetR = {x:initR_x,z:initR_z,y:initR_y-3.5}
+    let MoveTargetR = {x:initR_x-0.65,z:initR_z,y:initR_y-3.5}
     let UpTargetR = {x:initR_x-0.65,z:initR_z,y:initR_y}
     let OriginR = {x:gripperR_init_x-0.65,z:gripperR_init_z,y:gripperR_init_y}
     let ReleaseTargetR = {x:gripperR_init_x,z:gripperR_init_z,y:gripperR_init_y}
 
     // L
     let offsetL= {x:initL_x,z:initL_z,y:initL_y}
-    let DownTargetL = {x:initL_x,z:initL_z,y:initL_y-4.5}
-    let MoveTargetL = {x:initL_x+0.65,z:initL_z,y:initL_y-4.5}
+    let DownTargetL = {x:initL_x,z:initL_z,y:initL_y-3.5}
+    let MoveTargetL = {x:initL_x+0.65,z:initL_z,y:initL_y-3.5}
     let UpTargetL = {x:initL_x+0.65,z:initL_z,y:initL_y}
     let OriginL = {x:gripperL_init_x+0.65,z:gripperL_init_z,y:gripperL_init_y}
     let ReleaseTargetL = {x:gripperL_init_x,z:gripperL_init_z,y:gripperL_init_y}
@@ -990,6 +1006,7 @@ function base_loader(){
     // Load a glTF resource
     loader.load(
         'gltf/claw_machine/base.gltf',
+
 	// called when the resource is loaded
     function ( gltf ) {
         base = gltf
@@ -1007,8 +1024,6 @@ function base_loader(){
           })
 
         scene.add(baseObj);
-        load_flag = true
-        console.log(gltf)
 	},
 	// called while loading is progressing
 	function ( xhr ) {
@@ -1025,7 +1040,7 @@ function glass_outer_loader(){
   const loader = new THREE.GLTFLoader()
   // Load a glTF resource
   loader.load(
-      'gltf/claw_machine/glass-outer.gltf',
+      'gltf/claw_machine/glass.gltf',
 // called when the resource is loaded
   function ( gltf ) {
       glass_outer = gltf
@@ -1041,11 +1056,55 @@ function glass_outer_loader(){
             object.castShadow = true
             object.receiveShadow = true
           }
+          // 設定 gltf 透明度
+          if(object.isMesh ===true){
+            object.material.transparent = true
+            object.material.opacity = 2
+          }
         })
 
       scene.add(glass_outerObj);
-      glass_load_flag = true
-      // console.log(gltf)
+      console.log(gltf)
+},
+// called while loading is progressing
+function ( xhr ) {
+  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+},
+// called when loading has errors
+function ( error ) {
+  console.log( 'An error happened:'+error );
+}
+)}
+
+function roof_loader(){
+  // 載入 loader
+  const loader = new THREE.GLTFLoader()
+  // Load a glTF resource
+  loader.load(
+      'gltf/claw_machine/roof.gltf',
+// called when the resource is loaded
+  function ( gltf ) {
+      roof = gltf
+      roofObj = gltf.scene
+      roofObj.position.x = -2;
+      roofObj.position.y = 9.5;
+
+      roofObj.scale.set(1, 1, 1);
+
+      // 設定陰影
+      roofObj.traverse(function(object) {
+          if (object instanceof THREE.Mesh) {
+            object.castShadow = true
+            object.receiveShadow = true
+          }
+          // 設定 gltf 透明度
+          // if(object.isMesh ===true){
+          //   object.material.transparent = true
+          //   object.material.opacity = 2
+          // }
+        })
+
+      scene.add(roofObj);
 },
 // called while loading is progressing
 function ( xhr ) {

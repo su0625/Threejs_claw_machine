@@ -42,11 +42,11 @@ const http = require('http')
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000
 
-// server.listen(3000, (err) => {
-//     if(err){
-//         console.log("error")
-//     }
-//     console.log("The server is work on", "http://127.0.0.1:" + PORT)
-// })
+server.listen(3000, (err) => {
+    if(err){
+        console.log("error")
+    }
+    console.log("The server is work on", "http://127.0.0.1:" + PORT)
+})
 
 module.exports = app;

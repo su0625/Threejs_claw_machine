@@ -111,6 +111,7 @@ function init() {
     renderer.shadowMap.enabled = true 
     // 陰影貼圖種類   
     renderer.shadowMap.type = 2
+    // 使用 sRGB GLTF 才不會有色差問題
     renderer.outputEncoding = THREE.sRGBEncoding;
     // 將渲染器的 DOM 綁到網頁上
     document.body.appendChild(renderer.domElement)
