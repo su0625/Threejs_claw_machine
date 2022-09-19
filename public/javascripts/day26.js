@@ -1,6 +1,5 @@
 let scene, renderer, camera
 let cameraControl, stats, gui
-let usagiObj,piskeObj
 let Speed = 0
 
 // Cannon.js
@@ -10,9 +9,14 @@ let friction = 0.5
 let restitution = 0.7
 
 // Usagi初始位置
-let usagi_init_x = 0
+let usagi_init_x = -1
 let usagi_init_y = 5.1
 let usagi_init_z = 0
+
+// Piske初始位置
+let piske_init_x = 1.5
+let piske_init_y = 5.1
+let piske_init_z = 0
 
 // 夾爪初始位置
 let gripperR_init_x = -3.8
@@ -22,8 +26,6 @@ let gripperL_init_x = -6.8
 let gripperL_init_y = 8.5
 let gripperL_init_z = 1
 
-// gltf
-// var glass_load_flag = false
 
 class Usagi{
     constructor(){
@@ -76,9 +78,6 @@ class Usagi{
 // 加入場景
 function createUsagi(){
     usagiObj = new Usagi()
-    usagiObj.usagi.position.x = 0
-    usagiObj.usagi.position.y = 0
-    usagiObj.usagi.position.z = 12
     scene.add(usagiObj.usagi)
 }
 
@@ -123,9 +122,6 @@ class Piske{
 // 加入場景
 function createPiske(){
     piskeObj = new Piske()
-    piskeObj.piske.position.x = 3
-    piskeObj.piske.position.y = 0.5
-    piskeObj.piske.position.z = 12
     scene.add(piskeObj.piske)
 }
   
@@ -325,15 +321,6 @@ function initClawMachineCannon(){
     })
     world.add(machineBottomBody)
 
-    // 機台夾層地板網格
-    const machineBottomGeo = new THREE.BoxGeometry(6.8, 0.2, 6);
-    const machineBottomMat = new THREE.MeshPhongMaterial({
-        color: 0x000000,
-    });
-    machine = new THREE.Mesh(machineBottomGeo, machineBottomMat);
-    machine.castShadow = true
-    scene.add(machine);
-
     // 右牆壁剛體
     let wallshape = new CANNON.Box(new CANNON.Vec3(0.1, 2.7, 3))
     let wallMaterial = new CANNON.Material()
@@ -343,15 +330,6 @@ function initClawMachineCannon(){
         material: wallMaterial,
     })
     world.add(wallBody)
-
-    // 右牆壁網格
-    const wallGeo = new THREE.BoxGeometry(0.2, 5.4, 6);
-    const wallMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-    });
-    wall = new THREE.Mesh(wallGeo, wallMat);
-    wall.castShadow = true
-    scene.add(wall);
 
     // 左牆壁剛體
     let wallLshape = new CANNON.Box(new CANNON.Vec3(0.1, 4.5, 3))
@@ -363,15 +341,6 @@ function initClawMachineCannon(){
     })
     world.add(wallLBody)
 
-    // 左牆壁網格
-    const wallLGeo = new THREE.BoxGeometry(0.2, 9, 6);
-    const wallLMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-    });
-    wallL = new THREE.Mesh(wallLGeo, wallLMat);
-    wallL.castShadow = true
-    scene.add(wallL);
-
     // 檔板剛體
     let swallshape = new CANNON.Box(new CANNON.Vec3(0.1, 2.5, 3))
     let swallMaterial = new CANNON.Material()
@@ -381,15 +350,6 @@ function initClawMachineCannon(){
         material: swallMaterial,
     })
     world.add(swallBody)
-
-    //檔板網格
-    const swallGeo = new THREE.BoxGeometry(0.2, 5, 6);
-    const swallMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-    });
-    swall = new THREE.Mesh(swallGeo, swallMat);
-    swall.castShadow = true
-    scene.add(swall);
 
     // 掉落物地板剛體
     let floorshape = new CANNON.Box(new CANNON.Vec3(1.8, 0.1, 3))
@@ -401,15 +361,6 @@ function initClawMachineCannon(){
     })
     world.add(floorBody)
 
-    //掉落物地板網格
-    const floorGeo = new THREE.BoxGeometry(3.6, 0.2, 6);
-    const floorMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-    });
-    floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.castShadow = true
-    scene.add(floor);
-
     // 背板剛體
     let backwallshape = new CANNON.Box(new CANNON.Vec3(5.2, 2.8, 0.1))
     let backwallMaterial = new CANNON.Material()
@@ -420,15 +371,6 @@ function initClawMachineCannon(){
     })
     world.add(backwallBody)
 
-    // 背板網格
-    const backwallGeo = new THREE.BoxGeometry(10.5, 5.6, 0.2);
-    const backwallMat = new THREE.MeshPhongMaterial({
-        color: 0x1C4265,
-    });
-    backwall = new THREE.Mesh(backwallGeo, backwallMat);
-    backwall.castShadow = true
-    scene.add(backwall);
-
     // 前玻璃剛體
     let frontwallshape = new CANNON.Box(new CANNON.Vec3(5.2, 2.8, 0.1))
     let frontwallMaterial = new CANNON.Material()
@@ -438,17 +380,6 @@ function initClawMachineCannon(){
         material: frontwallMaterial,
     })
     world.add(frontwallBody)
-
-    // 前玻璃網格
-    const frontwallGeo = new THREE.BoxGeometry(10.5, 5.6, 0.2);
-    const frontwallMat = new THREE.MeshPhongMaterial({
-        color: 0x1C4265,
-        transparent:true,
-        opacity:0.3,
-    });
-    frontwall = new THREE.Mesh(frontwallGeo, frontwallMat);
-    frontwall.castShadow = true
-    scene.add(frontwall);
 }
 
 function initUsagiCannon(){
@@ -463,15 +394,6 @@ function initUsagiCannon(){
   })
   world.add(UsagiABody) 
 
-  // Usagi A網格
-  const UsagiAGeo = new THREE.BoxGeometry(1.5, 0.2, 1);
-  const UsagiAMat = new THREE.MeshPhongMaterial({
-    color: 0x4287f5,
-  });
-  UsagiA = new THREE.Mesh(UsagiAGeo, UsagiAMat);
-  UsagiA.castShadow = true
-  scene.add(UsagiA);
-
   // 建立Usagi B 剛體 Sphere(radius)
   let UsagiBShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
   let UsagiBCM = new CANNON.Material()
@@ -482,15 +404,6 @@ function initUsagiCannon(){
     material: UsagiBCM,
   })
   world.add(UsagiBBody)
-
-  // Usagi B網格
-  const UsagiBGeo = new THREE.BoxGeometry(1.5, 0.2, 1);
-  const UsagiBMat = new THREE.MeshPhongMaterial({
-    color: 0x4287f5,
-  });
-  UsagiB = new THREE.Mesh(UsagiBGeo, UsagiBMat);
-  UsagiB.castShadow = true
-  scene.add(UsagiB);
 
   // 建立Usagi C 剛體 Sphere(radius)
   let UsagiCShape = new CANNON.Box(new CANNON.Vec3(0.25, 0.3, 0.25))
@@ -503,104 +416,52 @@ function initUsagiCannon(){
   })
   world.add(UsagiCBody)
 
-  // Usagi C網格
-  const UsagiCGeo = new THREE.BoxGeometry(0.5, 0.6, 0.5);
-  const UsagiCMat = new THREE.MeshPhongMaterial({
-    color: 0x4287f5,
-  });
-  UsagiC = new THREE.Mesh(UsagiCGeo, UsagiCMat);
-  UsagiC.castShadow = true
-  scene.add(UsagiC);
-
   // Usagi 剛體組裝
   UsagiBodyJoint1 = new CANNON.LockConstraint(UsagiABody,UsagiBBody)
   world.addConstraint(UsagiBodyJoint1)
   UsagiBodyJoint2 = new CANNON.LockConstraint(UsagiBBody,UsagiCBody)
   world.addConstraint(UsagiBodyJoint2)
-
-
-  // 設定地板剛體與物體剛體 碰撞時會交互作用
-  // UsagiGroundContact = new CANNON.ContactMaterial(gripperRCM, UsagiBCM, {
-  //   // mass:0,
-  //   friction: 0.5, 
-  //   restitution: 0 // 恢復係數, 衡量兩個物體碰撞後反彈程度
-  // })
-  // world.addContactMaterial(UsagiGroundContact)
 }
 
-function initPiskeCannon(){
-    // 建立Piske A 剛體 Sphere(radius)
-      let PiskeAShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
-      let PiskeACM = new CANNON.Material()
-      PiskeABody = new CANNON.Body({
-        mass: 5,
-        shape: PiskeAShape,
-        position: new CANNON.Vec3(3,0.8,0),
-        material: PiskeACM,
-      })
-      world.add(PiskeABody)
+function initObjectCannon(obj_x,obj_y,obj_z){
+  // 建立 A 剛體 
+    let ObjAShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
+    ObjACM = new CANNON.Material()
+    ObjABody = new CANNON.Body({
+      mass: 1,
+      shape: ObjAShape,
+      position: new CANNON.Vec3(obj_x,obj_y+0.4,obj_z),
+      material: ObjACM,
+    })
+    world.add(ObjABody) 
     
-      // Piske A網格
-      const PiskeAGeo = new THREE.BoxGeometry(1.5, 0.2, 1);
-      const PiskeAMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-      });
-      PiskeA = new THREE.Mesh(PiskeAGeo, PiskeAMat);
-      PiskeA.castShadow = true
-      scene.add(PiskeA);
+    // 建立 B 剛體 
+    let ObjBShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
+    let ObjBCM = new CANNON.Material()
+    ObjBBody = new CANNON.Body({
+      mass: 1,
+      shape: ObjBShape,
+      position: new CANNON.Vec3(obj_x, obj_y-0.4, obj_z),
+      material: ObjBCM,
+    })
+    world.add(ObjBBody)
     
-      // 建立Piske B 剛體 Sphere(radius)
-      let PiskeBShape = new CANNON.Box(new CANNON.Vec3(0.75, 0.1, 0.5))
-      let PiskeBCM = new CANNON.Material()
-      PiskeBBody = new CANNON.Body({
-        mass: 1,
-        shape: PiskeBShape,
-        position: new CANNON.Vec3(3, 0.1, 0),
-        material: PiskeBCM,
-      })
-      world.add(PiskeBBody)
+    // 建立 C 剛體
+    let ObjCShape = new CANNON.Box(new CANNON.Vec3(0.25, 0.3, 0.25))
+    let ObjCCM = new CANNON.Material()
+    ObjCBody = new CANNON.Body({
+      mass: 1,
+      shape: ObjCShape,
+      position: new CANNON.Vec3(obj_x, obj_y, obj_z),
+      material: ObjCCM,
+    })
+    world.add(ObjCBody)
     
-      // Piske B網格
-      const PiskeBGeo = new THREE.BoxGeometry(1.5, 0.2, 1);
-      const PiskeBMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-      });
-      PiskeB = new THREE.Mesh(PiskeBGeo, PiskeBMat);
-      PiskeB.castShadow = true
-    //   scene.add(PiskeB);
-    
-      // 建立Piske C 剛體 Sphere(radius)
-      let PiskeCShape = new CANNON.Box(new CANNON.Vec3(0.25, 0.3, 0.25))
-      let PiskeCCM = new CANNON.Material()
-      PiskeCBody = new CANNON.Body({
-        mass: 5,
-        shape: PiskeCShape,
-        position: new CANNON.Vec3(3, 0.5, 0),
-        material: PiskeCCM,
-      })
-      world.add(PiskeCBody)
-    
-      // Piske C網格
-      const PiskeCGeo = new THREE.BoxGeometry(0.5, 0.8, 0.5);
-      const PiskeCMat = new THREE.MeshPhongMaterial({
-        color: 0x4287f5,
-      });
-      PiskeC = new THREE.Mesh(PiskeCGeo, PiskeCMat);
-      PiskeC.castShadow = true
-    //   scene.add(PiskeC);
-    
-      // Piske 剛體組裝
-      PiskeBodyJoint1 = new CANNON.LockConstraint(PiskeABody,PiskeBBody)
-      world.addConstraint(PiskeBodyJoint1)
-      PiskeBodyJoint2 = new CANNON.LockConstraint(PiskeBBody,PiskeCBody)
-      world.addConstraint(PiskeBodyJoint2)
-    
-      // 設定地板剛體與物體剛體 碰撞時會交互作用
-      PiskeGroundContact = new CANNON.ContactMaterial(gripperRCM, PiskeBCM, {
-        friction: friction, 
-        restitution: restitution // 恢復係數, 衡量兩個物體碰撞後反彈程度
-      })
-      world.addContactMaterial(PiskeGroundContact)
+    // Obj 剛體組裝
+    ObjBodyJoint1 = new CANNON.LockConstraint(ObjABody,ObjBBody)
+    world.addConstraint(ObjBodyJoint1)
+    ObjBodyJoint2 = new CANNON.LockConstraint(ObjBBody,ObjCBody)
+    world.addConstraint(ObjBodyJoint2)
 }
 
 const timeStep = 1.0 / 60.0 // seconds
@@ -608,67 +469,22 @@ const timeStep = 1.0 / 60.0 // seconds
 function render() {
     world.step(timeStep)
     // 複製剛體位址到物體位置
-    UsagiA.position.copy(UsagiABody.position)
-    UsagiA.quaternion.copy(UsagiABody.quaternion)
+    usagiObj.usagi.position.copy(UsagiCBody.position)
+    usagiObj.usagi.quaternion.copy(UsagiCBody.quaternion)
 
-    UsagiB.position.copy(UsagiBBody.position)
-    UsagiB.quaternion.copy(UsagiBBody.quaternion)
-
-    UsagiC.position.copy(UsagiCBody.position)
-    UsagiC.quaternion.copy(UsagiCBody.quaternion)
-
-    // usagiObj.usagi.position.copy(UsagiCBody.position)
-    // usagiObj.usagi.quaternion.copy(UsagiCBody.quaternion)
-
-    // piskeObj.piske.position.copy(PiskeCBody.position)
-    // piskeObj.piske.quaternion.copy(PiskeCBody.quaternion)
-
-    // PiskeA.position.copy(PiskeABody.position)
-    // PiskeA.quaternion.copy(PiskeABody.quaternion)
-
-    // PiskeA.position.copy(PiskeABody.position)
-    // PiskeA.quaternion.copy(PiskeABody.quaternion)
-
-    // PiskeB.position.copy(PiskeBBody.position)
-    // PiskeB.quaternion.copy(PiskeBBody.quaternion)
-
-    // PiskeC.position.copy(PiskeCBody.position)
-    // PiskeC.quaternion.copy(PiskeCBody.quaternion)
+    piskeObj.piske.position.copy(ObjCBody.position)
+    piskeObj.piske.quaternion.copy(ObjCBody.quaternion)
 
     statsUI.update()
     TWEEN.update()
     cameraControl.update()
 
-    // requestAnimationFrame(wall_load)
     requestAnimationFrame(gripper_load)
     requestAnimationFrame(render)
 
     renderer.render(scene, camera)
 }
 
-function wall_load() {
-  // 機台
-  machine.position.copy(machineBottomBody.position)
-  machine.quaternion.copy(machineBottomBody.quaternion)
-
-  wall.position.copy(wallBody.position)
-  wall.quaternion.copy(wallBody.quaternion)
-
-  wallL.position.copy(wallLBody.position)
-  wallL.quaternion.copy(wallLBody.quaternion)
-
-  floor.position.copy(floorBody.position)
-  floor.quaternion.copy(floorBody.quaternion)
-
-  swall.position.copy(swallBody.position)
-  swall.quaternion.copy(swallBody.quaternion)
-
-  backwall.position.copy(backwallBody.position)
-  backwall.quaternion.copy(backwallBody.quaternion)
-
-  frontwall.position.copy(frontwallBody.position)
-  frontwall.quaternion.copy(frontwallBody.quaternion)
-}
 function gripper_load(){
   gripperRTop.position.copy(gripperRTopBody.position)
   gripperRTop.quaternion.copy(gripperRTopBody.quaternion)
@@ -1064,7 +880,6 @@ function glass_outer_loader(){
         })
 
       scene.add(glass_outerObj);
-      console.log(gltf)
 },
 // called while loading is progressing
 function ( xhr ) {
@@ -1086,8 +901,9 @@ function roof_loader(){
   function ( gltf ) {
       roof = gltf
       roofObj = gltf.scene
-      roofObj.position.x = -2;
-      roofObj.position.y = 9.5;
+      roofObj.position.x = -2.3;
+      roofObj.position.y = 9.8;
+      roofObj.position.z = 1;
 
       roofObj.scale.set(1, 1, 1);
 
@@ -1097,11 +913,6 @@ function roof_loader(){
             object.castShadow = true
             object.receiveShadow = true
           }
-          // 設定 gltf 透明度
-          // if(object.isMesh ===true){
-          //   object.material.transparent = true
-          //   object.material.opacity = 2
-          // }
         })
 
       scene.add(roofObj);
@@ -1126,6 +937,6 @@ window.addEventListener('resize', function() {
 init()
 initCannon()
 initUsagiCannon()
-initPiskeCannon()
+initObjectCannon(piske_init_x,piske_init_y,piske_init_z)
 initClawMachineCannon()
 render()

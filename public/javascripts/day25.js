@@ -466,7 +466,6 @@ function initUsagiCannon(){
   world.addConstraint(UsagiBodyJoint1)
   UsagiBodyJoint2 = new CANNON.LockConstraint(UsagiBBody,UsagiCBody)
   world.addConstraint(UsagiBodyJoint2)
-
 }
 
 const timeStep = 1.0 / 60.0 // seconds
@@ -498,7 +497,7 @@ function render() {
 }
 
 function wall_load() {
-  // 機台
+  // 機台剛體
   machine.position.copy(machineBottomBody.position)
   machine.quaternion.copy(machineBottomBody.quaternion)
 
@@ -519,7 +518,6 @@ function wall_load() {
 
   frontwall.position.copy(frontwallBody.position)
   frontwall.quaternion.copy(frontwallBody.quaternion)
-
 }
 
 function gripper_load(){
@@ -699,6 +697,160 @@ function click_Gripper(){
     tweenToOriginL.chain(tweenReleaseL)
 }
 
+function click_Right(){
+    initR_x = gripperRBody.position.x
+    initR_z = gripperRBody.position.z
+    initR_y = gripperRBody.position.y
+    initL_x = gripperLBody.position.x
+    initL_z = gripperLBody.position.z
+    initL_y = gripperLBody.position.y
+    let offsetR = {x:initR_x,z:initR_z,y:initR_y}
+    let targetR = {x:initR_x+1,z:initR_z,y:initR_y}
+    let offsetL = {x:initL_x,z:initL_z,y:initL_y}
+    let targetL = {x:initL_x+1,z:initL_z,y:initL_y}
+
+    const RRight=()=>{
+      //移動
+      gripperRBody.position.x = offsetR.x
+    }
+    tweenRRight = new TWEEN.Tween(offsetR)
+        .to(targetR,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(RRight)
+        .onComplete(()=>{
+        })
+
+    
+    const LRight=()=>{
+      //移動
+      gripperLBody.position.x = offsetL.x
+    }
+    tweenLRight = new TWEEN.Tween(offsetL)
+        .to(targetL,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(LRight)
+        .onComplete(()=>{
+            console.log("Right done")
+        })
+
+    tweenRRight.start()
+    tweenLRight.start()
+}
+
+function click_Left(){
+    initR_x = gripperRBody.position.x
+    initR_z = gripperRBody.position.z
+    initR_y = gripperRBody.position.y
+    initL_x = gripperLBody.position.x
+    initL_z = gripperLBody.position.z
+    initL_y = gripperLBody.position.y
+    let offsetR = {x:initR_x,z:initR_z,y:initR_y}
+    let targetR = {x:initR_x-1,z:initR_z,y:initR_y}
+    let offsetL = {x:initL_x,z:initL_z,y:initL_y}
+    let targetL = {x:initL_x-1,z:initL_z,y:initL_y}
+
+    const RLeft=()=>{
+      gripperRBody.position.x = offsetR.x
+    }
+    tweenRLeft = new TWEEN.Tween(offsetR)
+        .to(targetR,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(RLeft)
+        .onComplete(()=>{
+        })
+
+    
+    const LLeft=()=>{
+      gripperLBody.position.x = offsetL.x
+    }
+    tweenLLeft = new TWEEN.Tween(offsetL)
+        .to(targetL,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(LLeft)
+        .onComplete(()=>{
+            console.log("Left done")
+        })
+
+    tweenRLeft.start()
+    tweenLLeft.start()
+}
+
+function click_Forward(){
+    initR_x = gripperRBody.position.x
+    initR_z = gripperRBody.position.z
+    initR_y = gripperRBody.position.y
+    initL_x = gripperLBody.position.x
+    initL_z = gripperLBody.position.z
+    initL_y = gripperLBody.position.y
+    let offsetR = {x:initR_x,z:initR_z,y:initR_y}
+    let targetR = {x:initR_x,z:initR_z+0.5,y:initR_y}
+    let offsetL = {x:initL_x,z:initL_z,y:initL_y}
+    let targetL = {x:initL_x,z:initL_z+0.5,y:initL_y}
+
+    const RForward=()=>{
+      gripperRBody.position.z = offsetR.z
+    }
+    tweenRForward = new TWEEN.Tween(offsetR)
+        .to(targetR,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(RForward)
+        .onComplete(()=>{
+        })
+
+    
+    const LForward=()=>{
+      gripperLBody.position.z = offsetL.z
+    }
+    tweenLForward = new TWEEN.Tween(offsetL)
+        .to(targetL,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(LForward)
+        .onComplete(()=>{
+            console.log("Forward done")
+        })
+
+    tweenRForward.start()
+    tweenLForward.start()
+}
+
+function click_Back(){
+    initR_x = gripperRBody.position.x
+    initR_z = gripperRBody.position.z
+    initR_y = gripperRBody.position.y
+    initL_x = gripperLBody.position.x
+    initL_z = gripperLBody.position.z
+    initL_y = gripperLBody.position.y
+    let offsetR = {x:initR_x,z:initR_z,y:initR_y}
+    let targetR = {x:initR_x,z:initR_z-0.5,y:initR_y}
+    let offsetL = {x:initL_x,z:initL_z,y:initL_y}
+    let targetL = {x:initL_x,z:initL_z-0.5,y:initL_y}
+
+    const RBack=()=>{
+      gripperRBody.position.z = offsetR.z
+    }
+    tweenRBack = new TWEEN.Tween(offsetR)
+        .to(targetR,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(RBack)
+        .onComplete(()=>{
+        })
+
+    
+    const LBack=()=>{
+      gripperLBody.position.z = offsetL.z
+    }
+    tweenLBack = new TWEEN.Tween(offsetL)
+        .to(targetL,750)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(LBack)
+        .onComplete(()=>{
+            console.log("Back done")
+        })
+
+    tweenRBack.start()
+    tweenLBack.start()
+}
+
 function base_loader(){
     // 載入 loader
     const loader = new THREE.GLTFLoader()
@@ -721,6 +873,7 @@ function base_loader(){
               object.receiveShadow = true
             }
           })
+
         scene.add(baseObj);
 	},
 	// called while loading is progressing
@@ -762,6 +915,7 @@ function glass_outer_loader(){
         })
 
       scene.add(glass_outerObj);
+      console.log(gltf)
 },
 // called while loading is progressing
 function ( xhr ) {
@@ -774,39 +928,39 @@ function ( error ) {
 )}
 
 function roof_loader(){
-    // 載入 loader
-    const loader = new THREE.GLTFLoader()
-    // Load a glTF resource
-    loader.load(
-        'gltf/claw_machine/roof.gltf',
-  // called when the resource is loaded
-    function ( gltf ) {
-        roof = gltf
-        roofObj = gltf.scene
-        roofObj.position.x = -2.3;
-        roofObj.position.y = 9.8;
-        roofObj.position.z = 1;
-  
-        roofObj.scale.set(1, 1, 1);
-  
-        // 設定陰影
-        roofObj.traverse(function(object) {
-            if (object instanceof THREE.Mesh) {
-              object.castShadow = true
-              object.receiveShadow = true
-            }
-          })
-  
-        scene.add(roofObj);
-  },
-  // called while loading is progressing
-  function ( xhr ) {
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-  },
-  // called when loading has errors
-  function ( error ) {
-    console.log( 'An error happened:'+error );
-  }
+  // 載入 loader
+  const loader = new THREE.GLTFLoader()
+  // Load a glTF resource
+  loader.load(
+      'gltf/claw_machine/roof.gltf',
+// called when the resource is loaded
+  function ( gltf ) {
+      roof = gltf
+      roofObj = gltf.scene
+      roofObj.position.x = -2.3;
+      roofObj.position.y = 9.8;
+      roofObj.position.z = 1;
+
+      roofObj.scale.set(1, 1, 1);
+
+      // 設定陰影
+      roofObj.traverse(function(object) {
+          if (object instanceof THREE.Mesh) {
+            object.castShadow = true
+            object.receiveShadow = true
+          }
+        })
+
+      scene.add(roofObj);
+},
+// called while loading is progressing
+function ( xhr ) {
+  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+},
+// called when loading has errors
+function ( error ) {
+  console.log( 'An error happened:'+error );
+}
 )}
 
 // 監聽螢幕寬高來做簡單 RWD 設定

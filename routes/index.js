@@ -86,9 +86,14 @@ router.get('/Day24', function(req, res, next) {
   res.render('day24', { title: 'Day24' });
 });
 
-// DayTest
-router.get('/DayTest', function(req, res, next) {
-  res.render('dayTest', { title: 'DayTest' });
+// Day25
+router.get('/Day25', function(req, res, next) {
+  res.render('day25', { title: 'Day25' });
+});
+
+// Day26
+router.get('/Day26', function(req, res, next) {
+  res.render('day26', { title: 'Day26' });
 });
 
 module.exports = router;
